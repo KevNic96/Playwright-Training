@@ -29,6 +29,24 @@ test.describe('Login tests', () => {
   
       await expect(homePage.homeText).toBeVisible()
     });
+
+    test('Must not show the username error', async({page})=>{
+        await loginPage.fillUserName(loginData.nonValidUserCredentials.username);
+        await loginPage.fillPassword(loginData.nonValidUserCredentials.password);
+
+        await loginPage.pressLoginButton();
+
+        await expect(loginPage.notValidUser).toContainText("Not found. Couldn't find any user");
+    })
+
+    test('Username ok, Password wrong', async({page})=> {
+        await loginPage.fillUserName(loginData.nonValidPassCredentials.username);
+        await loginPage.fillPassword(loginData.nonValidPassCredentials.password);
+        
+        await loginPage.pressLoginButton();
+
+        await expect(loginPage.notValidPass).toContainText('Validation Error');
+    } )
   
   });
   
