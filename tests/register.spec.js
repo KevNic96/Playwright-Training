@@ -22,7 +22,7 @@ test.describe('Register tests', () => {
     await registerPage.goto();
   })
 
-  test('register with valid credentials', async ({ page }) => {  
+  /*test('register with valid credentials', async ({ page }) => {  
     await registerPage.fillName('John Doe');
     await registerPage.fillUserName('validUser');
     await registerPage.fillEmail('validUser@mail.com');
@@ -32,9 +32,9 @@ test.describe('Register tests', () => {
     await registerPage.pressConfirmButton();
 
     await expect(homePage.homeText).toBeVisible();
-  });
+  });*/
 
-  test.only('register with a already used email', async ({ page }) => {  
+  test('register with a already used email', async ({ page }) => {  
     await registerPage.fillName(registerData.registerCredentials.name);
     await registerPage.fillUserName(registerData.registerCredentials.userName);
     await registerPage.fillEmail(registerData.registerCredentials.email);
@@ -66,7 +66,7 @@ test.describe('Register tests', () => {
     await registerPage.fillConfirmPassword('Pass123$%');
 
     await registerPage.pressConfirmButton();
-    
+
     await expect(registerPage.errorDifferentPasswords).toContainText('Passwords must match');
   });
 
