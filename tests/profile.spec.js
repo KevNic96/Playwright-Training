@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 import { LoginPage } from '../pages/LoginPage';
 import { HomePage } from "../pages/HomePage";
 import { test, expect } from '@playwright/test';
-import { LoginData } from '../data/login.data'
+import { loginData } from '../data/login.data'
 import { ProfilePage } from '../pages/ProfilePage';
 
 let loginPage;
@@ -23,7 +23,7 @@ test.describe('Profile tests', () => {
   test.beforeEach(async () => {
     // Arrange successfull login
     await loginPage.goto();
-    await loginPage.login(LoginData.validCredentials.username, LoginData.validCredentials.password);
+    await loginPage.login(loginData.loginValidCredentials.username, loginData.loginValidCredentials.password);
   })
   
   
@@ -40,7 +40,7 @@ test.describe('Profile tests', () => {
 
       //Assert
       expect(profilePage.followButton).toBeHidden();
-      await page.waitForTimeout(1000)
+      await page.waitForTimeout(2000)
       expect(profilePage.unfollowButton).toBeVisible();
       await page.waitForTimeout(1000)
 
