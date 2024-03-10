@@ -12,11 +12,11 @@ export class LoginPage {
     async goto() {
         await this.page.goto('https://frontend-training-taupe.vercel.app/login');
       };
-    
+
       async fillUserName(userName) {
         await this.username.fill(userName);
       }
-    
+
       async fillPassword(password) {
         await this.password.fill(password);
       }
@@ -24,4 +24,10 @@ export class LoginPage {
       async pressLoginButton() {
         await this.loginButton.click();
       }
+
+  async login(username, password) {
+    await this.fillUserName(username);
+    await this.fillPassword(password);
+    await this.pressLoginButton();
+  }
   }
