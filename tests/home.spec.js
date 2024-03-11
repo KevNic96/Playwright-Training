@@ -60,6 +60,23 @@ test.describe('Home tests', () => {
       expect(finalDivsCount).toBeGreaterThan(initialDivsCount); 
     })
   });
+
+  test.describe('Following tweets', () => {
+    test('Should show following users tweets', async({page}) => {
+      await page.awaitForTimeout(1000)
+      const firstFollowTweet = await homePage.followDiv.first()
+      expect(firstFollowTweet).toBeVisible();
+      const tweetChatIcon = await homePage.chatIcon.first();
+      expect(tweetChatIcon).toBeVisible();
+    })
+
+    test('Edit profile', async({page}) =>{
+      const ownProfileIcon = homePage.ownUserProfileIcon.first()
+      await ownProfileIcon.click()
+
+      expect(homePage.page).toHaveURL('EditProfile') // arreglar
+    })
+  })
   
 
 })

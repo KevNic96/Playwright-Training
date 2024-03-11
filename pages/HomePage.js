@@ -6,7 +6,9 @@ export class HomePage {
       this.forYouDiv = page.locator('//*[@id="root"]/div/div/main/div[2]');
       this.chatIcon = page.locator('//*[@id="root"]/div/div/main/div[2]/div[2]/div[3]/button[1]/img');
       this.retweetIcon = page.getByAltText('retweet-icon');
+      this.ownUserProfileIcon = page.getByText('NI', {exact: true}); //
       this.otherUserProfileIcon = page.getByText('FE', { exact: true });
+      this.followDiv = page.locator('//*[@id="root"]/div/div/main/div[2]') //
   }
 
   async goto() {
