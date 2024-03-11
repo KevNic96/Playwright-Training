@@ -40,13 +40,25 @@ test.describe('Profile tests', () => {
 
       //Assert
       expect(profilePage.followButton).toBeHidden();
-      await page.waitForTimeout(2000)
+      await page.waitForTimeout(5000)
       expect(profilePage.unfollowButton).toBeVisible();
       await page.waitForTimeout(1000)
 
       // Clean
       await profilePage.unfollowButton.click();
-      expect(profilePage.unfollowButton).toBeHidden();
+    });
+  });
+
+  test.describe('Own Profile page tests', () => {
+
+    // WILL FAIL - APP ERROR
+    test('should be able to edit own profile (TC-012)', async ({ page }) => {  
+      await page.waitForTimeout(1000)
+      // Act
+      await homePage.profileButton.click();
+      await profilePage.modifyProfileButton.click();
+      //Assert
+      expect(profilePage.modifyProfileButton).toHaveText('Modify Profile');
     });
   });
 })

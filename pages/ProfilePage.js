@@ -5,10 +5,11 @@ export class ProfilePage {
       this.baseUrl = `https://frontend-training-taupe.vercel.app/profile?user=`;
       this.followButton = page.getByRole('button', { name: 'Follow' });
       this.unfollowButton = page.getByRole('button', { name: 'Unfollow' });
+      this.modifyProfileButton = page.getByRole('button', { name: 'Modify Profile' });
   }
 
-  async goto(userId) {
-    await this.page.goto(`https://frontend-training-taupe.vercel.app/profile?user=${userId}`);
+  async goto() {
+    await this.page.goto(`https://frontend-training-taupe.vercel.app/profile`);
   };
 
 }
