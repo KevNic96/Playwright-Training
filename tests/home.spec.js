@@ -241,29 +241,30 @@ test.describe('Home tests', () => {
     test('should NOT create a tweet if it contains more than 240 characters', async ({ page }) => {
       // Arrange
       const tweetText = HomeData.tweetOf260Char;
-  
+    
       // Act
       await homePage.tweetButton.click();
       await homePage.fillTweetInput(tweetText);
-  
-      // Assert
-      expect(tweetText).toBeVisible();
-      expect(homePage.modalTweetButton).toBeDisabled();
-    });
+      await page.waitForTimeout(2000); // Esperamos un poco para que el tweet se procese y aparezca en la lista de tweets
+      await homePage.modalTweetButton.click();
 
+      // Assert
+      expect(homePage.moreCharTweet).toHaveText('Post should be between 1 and 240 characters');
+    });
+    
     test('should create a tweet with image', async ({ page }) => {
       // Arrange
       const tweetText = "This is a test tweet with image.";
       const imagePath = 'path/to/your/image.jpg';
-  
+
       // Act
       await homePage.tweetButton.click();
       await homePage.fillTweetInput(tweetText);
-      await homePage.attachImage(imagePath); 
+      await homePage.attachImage(imagePath);
       await homePage.modalTweetButton.click();
       await page.waitForTimeout(2000);
       const imageTweet = await homePage.page.getByText(`${imagePath}`, {exact: true})
-  
+
       // Assert
       expect(imageTweet).toBeVisible();
       expect(imageTweet).toHaveText(`${imagePath}`);

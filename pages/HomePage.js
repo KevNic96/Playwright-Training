@@ -18,6 +18,7 @@ export class HomePage {
       // Create Tweet
       this.tweetInput = page.getByPlaceholder("What's happening?");
       this.imageInput = page.locator('input[type="file"]');
+      this.moreCharTweet = page.getByText('Post should be between 1 and 240 characters');
   }
 
   async goto() {
