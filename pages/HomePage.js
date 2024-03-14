@@ -15,14 +15,27 @@ export class HomePage {
       this.modalCloseButton = page.locator('.jyAbil');
       this.modalTweetButton = page.locator('.eheooK')
       this.commentInput = page.getByPlaceholder('Tweet your reply');
+      // Create Tweet
+      this.tweetInput = page.getByPlaceholder("What's happening?");
+      this.imageInput = page.locator('input[type="file"]');
   }
 
   async goto() {
     await this.page.goto('https://frontend-training-taupe.vercel.app/');
   };
 
+  //Create
+  async fillTweetInput(tweet){
+    await this.tweetInput.fill(tweet);
+  }
+
   async fillCommentInput(comment) {
     await this.commentInput.fill(comment);
   }
+
+  async attachImage(imagePath) {
+    await this.imageInput.setInputFiles(imagePath);
+  }
+
 
 }

@@ -222,47 +222,49 @@ test.describe('Home tests', () => {
   });
 
   test.describe('"Tweet" tests', () => {
-    test('should create a tweet', async ({ page }) => {
+    test('should create a tweet which contains less than 240 characters', async ({ page }) => {
       // Arrange
-      await page.waitForTimeout(1000);
-      const initialTweetsCount = await homePage.tweets.count();
-      const tweetText = HomeData.tweetOf260Char; // Usamos un tweet de ejemplo definido en home.data.js
+      const tweetText = HomeData.tweetOf240Char; // Usamos un tweet de ejemplo definido en home.data.js
   
       // Act
       await homePage.tweetButton.click();
-      await page.waitForSelector('.tweetInput');
-      await homePage.fillCommentInput(tweetText);
+      await homePage.fillTweetInput(tweetText);
       await homePage.modalTweetButton.click();
       await page.waitForTimeout(2000); // Esperamos un poco para que el tweet se procese y aparezca en la lista de tweets
   
       // Assert
-      const finalTweetsCount = await homePage.tweets.count();
-      const lastTweetText = await homePage.page.locator('.tweetText').nth(finalTweetsCount - 1).innerText();
-      
-      // Verificamos que el contador de tweets haya aumentado en 1
-      expect(finalTweetsCount).toBe(initialTweetsCount + 1);
-      
-      // Verificamos que el texto del último tweet sea el texto que ingresamos
-      expect(lastTweetText).toEqual(tweetText);
+      expect(tweetText).toBeVisible();
+      expect(tweetText).toHaveText(`${tweetText}`);
+    });
+
+    test('should NOT create a tweet if it contains more than 240 characters', async ({ page }) => {
+      // Arrange
+      const tweetText = HomeData.tweetOf260Char;
+  
+      // Act
+      await homePage.tweetButton.click();
+      await homePage.fillTweetInput(tweetText);
+      await homePage.modalTweetButton.click();
+      await page.waitForTimeout(2000); // Esperamos un poco para que el tweet se procese y aparezca en la lista de tweets
+  
+      // Assert
+      expect(tweetText).not.toBeVisible();
+      expect(tweetText).toHaveText(`${tweetText}`);
     });
 
     test('should create a tweet with image', async ({ page }) => {
       // Arrange
-      await page.waitForTimeout(1000);
-      const initialTweetsCount = await homePage.tweets.count();
       const tweetText = "This is a test tweet with image.";
-      const imagePath = 'path/to/your/image.jpg'; 
+      const imagePath = 'path/to/your/image.jpg';
   
       // Act
       await homePage.tweetButton.click();
-      await page.waitForSelector('.tweetInput');
-      await homePage.fillCommentInput(tweetText);
+      await homePage.fillTweetInput(tweetText);
       await homePage.attachImage(imagePath); 
       await homePage.modalTweetButton.click();
       await page.waitForTimeout(2000); 
   
       // Assert
-      const finalTweetsCount = await homePage.tweets.count();
       const lastTweetText = await homePage.page.locator('.tweetText').nth(finalTweetsCount - 1).innerText();
       const lastTweetImage = await homePage.page.locator('.tweetImage').nth(finalTweetsCount - 1).getAttribute('src');
   
