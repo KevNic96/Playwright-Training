@@ -4,15 +4,25 @@ export class HomePage {
       this.homeText = page.getByRole('heading', { name: 'Home' })
       this.tweetButton = page.getByRole('button', { name: 'Tweet' });
       this.forYouDiv = page.locator('//*[@id="root"]/div/div/main/div[2]');
-      this.chatIcon = page.locator('//*[@id="root"]/div/div/main/div[2]/div[2]/div[3]/button[1]/img');
+      this.followingDiv = page.locator('.hKPtDu');
+      this.chatIcon = page.getByAltText('chat-icon');
       this.retweetIcon = page.getByAltText('retweet-icon');
-      this.ownUserProfileIcon = page.getByText('NI', {exact: true}); //
+      this.likeIcon = page.getByAltText('like-icon');
       this.otherUserProfileIcon = page.getByText('FE', { exact: true });
-      this.followDiv = page.locator('//*[@id="root"]/div/div/main/div[2]') //
+      this.followingButton = page.getByText('Following', { exact: true });
+      this.profileButton = page.getByRole('button', { name: 'Profile' });
+      this.commentModal = page.locator('.inrQXB');
+      this.modalCloseButton = page.locator('.jyAbil');
+      this.modalTweetButton = page.locator('.eheooK')
+      this.commentInput = page.getByPlaceholder('Tweet your reply');
   }
 
   async goto() {
     await this.page.goto('https://frontend-training-taupe.vercel.app/');
   };
+
+  async fillCommentInput(comment) {
+    await this.commentInput.fill(comment);
+  }
 
 }
