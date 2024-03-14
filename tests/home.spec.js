@@ -220,5 +220,65 @@ test.describe('Home tests', () => {
       expect(notFollowedUserTweet).toBeHidden();
     });
   });
+
+  test.describe('"Tweet" tests', () => {
+    test('should create a tweet', async ({ page }) => {
+      // Arrange
+      await page.waitForTimeout(1000);
+      const initialTweetsCount = await homePage.tweets.count();
+      const tweetText = HomeData.tweetOf260Char; // Usamos un tweet de ejemplo definido en home.data.js
+  
+      // Act
+      await homePage.tweetButton.click();
+      await page.waitForSelector('.tweetInput');
+      await homePage.fillCommentInput(tweetText);
+      await homePage.modalTweetButton.click();
+      await page.waitForTimeout(2000); // Esperamos un poco para que el tweet se procese y aparezca en la lista de tweets
+  
+      // Assert
+      const finalTweetsCount = await homePage.tweets.count();
+      const lastTweetText = await homePage.page.locator('.tweetText').nth(finalTweetsCount - 1).innerText();
+      
+      // Verificamos que el contador de tweets haya aumentado en 1
+      expect(finalTweetsCount).toBe(initialTweetsCount + 1);
+      
+      // Verificamos que el texto del último tweet sea el texto que ingresamos
+      expect(lastTweetText).toEqual(tweetText);
+    });
+
+    test('should create a tweet with image', async ({ page }) => {
+      // Arrange
+      await page.waitForTimeout(1000);
+      const initialTweetsCount = await homePage.tweets.count();
+      const tweetText = "This is a test tweet with image.";
+      const imagePath = 'path/to/your/image.jpg'; 
+  
+      // Act
+      await homePage.tweetButton.click();
+      await page.waitForSelector('.tweetInput');
+      await homePage.fillCommentInput(tweetText);
+      await homePage.attachImage(imagePath); 
+      await homePage.modalTweetButton.click();
+      await page.waitForTimeout(2000); 
+  
+      // Assert
+      const finalTweetsCount = await homePage.tweets.count();
+      const lastTweetText = await homePage.page.locator('.tweetText').nth(finalTweetsCount - 1).innerText();
+      const lastTweetImage = await homePage.page.locator('.tweetImage').nth(finalTweetsCount - 1).getAttribute('src');
+  
+      // Verify that tweet count increased by 1
+      expect(finalTweetsCount).toBe(initialTweetsCount + 1);
+  
+      // Verify that the last tweet matches the text provided
+      expect(lastTweetText).toEqual(tweetText);
+  
+      // Verify that the last tweet contains an image
+      expect(lastTweetImage).not.toBeNull();
+    });
+
+  });
+
+  
+
 })
 
