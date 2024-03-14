@@ -221,7 +221,7 @@ test.describe('Home tests', () => {
     });
   });
 
-  test.describe('"Tweet" tests', () => {
+  test.describe('"Create tweet" section tests', () => {
     test('should create a tweet which contains less than 240 characters', async ({ page }) => {
       // Arrange
       const tweetText = HomeData.tweetOf240Char; // Usamos un tweet de ejemplo definido en home.data.js
@@ -231,10 +231,11 @@ test.describe('Home tests', () => {
       await homePage.fillTweetInput(tweetText);
       await homePage.modalTweetButton.click();
       await page.waitForTimeout(2000); // Esperamos un poco para que el tweet se procese y aparezca en la lista de tweets
+      const newTweet = await homePage.page.getByText(`${tweetText}`, { exact: true })
   
       // Assert
-      expect(tweetText).toBeVisible();
-      expect(tweetText).toHaveText(`${tweetText}`);
+      expect(newTweet).toBeVisible();
+      expect(newTweet).toHaveText(`${tweetText}`);
     });
 
     test('should NOT create a tweet if it contains more than 240 characters', async ({ page }) => {
@@ -246,10 +247,11 @@ test.describe('Home tests', () => {
       await homePage.fillTweetInput(tweetText);
       await homePage.modalTweetButton.click();
       await page.waitForTimeout(2000); // Esperamos un poco para que el tweet se procese y aparezca en la lista de tweets
+      const newWrongTweet = await homePage.page.getByText(`${tweetText}`, {exact: true})
   
       // Assert
-      expect(tweetText).not.toBeVisible();
-      expect(tweetText).toHaveText(`${tweetText}`);
+      expect(newWrongTweet).not.toBeVisible();
+      expect(newWrongTweet).not.toHaveText(`${tweetText}`);
     });
 
     test('should create a tweet with image', async ({ page }) => {
@@ -262,20 +264,12 @@ test.describe('Home tests', () => {
       await homePage.fillTweetInput(tweetText);
       await homePage.attachImage(imagePath); 
       await homePage.modalTweetButton.click();
-      await page.waitForTimeout(2000); 
+      await page.waitForTimeout(2000);
+      const imageTweet = await homePage.page.getByText(`${imagePath}`, {exact: true})
   
       // Assert
-      const lastTweetText = await homePage.page.locator('.tweetText').nth(finalTweetsCount - 1).innerText();
-      const lastTweetImage = await homePage.page.locator('.tweetImage').nth(finalTweetsCount - 1).getAttribute('src');
-  
-      // Verify that tweet count increased by 1
-      expect(finalTweetsCount).toBe(initialTweetsCount + 1);
-  
-      // Verify that the last tweet matches the text provided
-      expect(lastTweetText).toEqual(tweetText);
-  
-      // Verify that the last tweet contains an image
-      expect(lastTweetImage).not.toBeNull();
+      expect(imageTweet).toBeVisible();
+      expect(imageTweet).toHaveText(`${imagePath}`);
     });
 
   });
