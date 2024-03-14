@@ -245,13 +245,10 @@ test.describe('Home tests', () => {
       // Act
       await homePage.tweetButton.click();
       await homePage.fillTweetInput(tweetText);
-      await homePage.modalTweetButton.click();
-      await page.waitForTimeout(2000); // Esperamos un poco para que el tweet se procese y aparezca en la lista de tweets
-      const newWrongTweet = await homePage.page.getByText(`${tweetText}`, {exact: true})
   
       // Assert
-      expect(newWrongTweet).not.toBeVisible();
-      expect(newWrongTweet).not.toHaveText(`${tweetText}`);
+      expect(tweetText).toBeVisible();
+      expect(homePage.modalTweetButton).toBeDisabled();
     });
 
     test('should create a tweet with image', async ({ page }) => {
